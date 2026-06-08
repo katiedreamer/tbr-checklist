@@ -1,288 +1,242 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TBR Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+:root {
+  --bg:        oklch(98.5% 0.006 78);
+  --surface:   oklch(96%   0.007 78);
+  --surface2:  oklch(93%   0.008 78);
+  --border:    oklch(88%   0.009 78);
+  --border-md: oklch(80%   0.012 78);
+  --text:      oklch(16%   0.010 78);
+  --text-2:    oklch(50%   0.010 78);
+  --text-3:    oklch(70%   0.008 78);
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px;
+  --green:#3B6D11; --green-mid:#639922; --green-light:#97C459; --green-bg:#EAF3DE;
+  --teal:#0F6E56;  --teal-light:#5DCAA5; --teal-bg:#E1F5EE;
+  --blue:#185FA5;  --blue-light:#85B7EB; --blue-bg:#E6F1FB;
+  --amber:#BA7517; --amber-light:#EF9F27; --amber-bg:#FAEEDA;
+  --red:#A32D2D;   --red-light:#F09595;  --red-bg:#FCEBEB;
+  --gray:#5F5E5A;  --gray-light:#B4B2A9; --gray-bg:#F1EFE8;
+}
+@media (prefers-color-scheme: dark) {
   :root {
-    --bg: #ffffff;
-    --surface: #f8f7f4;
-    --surface2: #f1f0ec;
-    --border: rgba(0,0,0,0.1);
-    --border-md: rgba(0,0,0,0.18);
-    --text: #1a1a1a;
-    --text-2: #6b6b6b;
-    --text-3: #a0a0a0;
-    --radius-sm: 8px;
-    --radius-md: 10px;
-    --radius-lg: 14px;
-    --green: #3B6D11; --green-mid: #639922; --green-light: #97C459; --green-bg: #EAF3DE;
-    --teal: #0F6E56; --teal-light: #5DCAA5; --teal-bg: #E1F5EE;
-    --blue: #185FA5; --blue-light: #85B7EB; --blue-bg: #E6F1FB;
-    --amber: #BA7517; --amber-light: #EF9F27; --amber-bg: #FAEEDA;
-    --red: #A32D2D; --red-light: #F09595; --red-bg: #FCEBEB;
-    --gray: #5F5E5A; --gray-light: #B4B2A9; --gray-bg: #F1EFE8;
+    --bg:        oklch(10%  0.005 78); --surface:  oklch(14% 0.006 78);
+    --surface2:  oklch(18%  0.007 78); --border:   oklch(24% 0.006 78);
+    --border-md: oklch(34%  0.008 78); --text:     oklch(92% 0.006 78);
+    --text-2:    oklch(58%  0.010 78); --text-3:   oklch(38% 0.008 78);
+    --green-bg:oklch(14% 0.04 135); --teal-bg:oklch(14% 0.04 175);
+    --blue-bg:oklch(14% 0.04 250);  --amber-bg:oklch(14% 0.04 70);
+    --red-bg:oklch(14% 0.04 20);    --gray-bg:oklch(16% 0.006 78);
   }
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;min-height:100vh}
+.app{max-width:680px;margin:0 auto;padding:20px 16px 80px}
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #111110; --surface: #1a1a18; --surface2: #222220;
-      --border: rgba(255,255,255,0.1); --border-md: rgba(255,255,255,0.18);
-      --text: #e8e8e0; --text-2: #888884; --text-3: #555552;
-      --green-bg: #0d1f06; --teal-bg: #041f18; --blue-bg: #04162e;
-      --amber-bg: #1f1200; --red-bg: #1f0808; --gray-bg: #1a1a17;
-    }
-  }
+/* HEADER */
+.header{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.header-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.header-title{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.sess-status{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:12px;color:var(--text-2)}
+.sess-dot{width:7px;height:7px;border-radius:50%;background:var(--green-mid);flex-shrink:0}
+.sess-dot.off{background:var(--gray-light)}
+.clock-block{text-align:right}
+.clock-val{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;color:var(--text)}
+.clock-tz{font-size:11px;color:var(--text-3);margin-top:2px}
+.sweep-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sweep-card{padding:11px 14px;border-radius:var(--r-lg);border:1px solid var(--border);cursor:pointer;transition:all .15s;background:var(--bg)}
+.sweep-card:hover{border-color:var(--border-md)}
+.sweep-card.active{background:var(--green-bg);border-color:var(--green-light)}
+.sweep-card .stag{display:block;font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.sweep-card.active .stag{color:var(--green)}
+.sweep-card .ssub{font-size:11px;color:var(--text-2);line-height:1.4}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.prog-track{flex:1;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px;background:var(--red);transition:width .3s ease,background .3s}
+.prog-label{font-size:12px;color:var(--text-2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.reset-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:var(--r-sm);background:transparent;cursor:pointer;color:var(--text-2);font-size:12px;font-family:inherit;transition:all .15s}
+.reset-btn:hover{border-color:var(--red-light);color:var(--red);background:var(--red-bg)}
+.reset-btn svg{width:11px;height:11px}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    min-height: 100vh;
-    padding: 0;
-  }
+/* SECTIONS */
+.sections{display:flex;flex-direction:column;gap:8px}
+.section{border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.sec-head{display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;background:var(--surface);user-select:none;transition:background .1s}
+.sec-head:hover{background:var(--surface2)}
+.sec-icon{font-size:13px;flex-shrink:0}
+.sec-title{font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--text-2);flex:1}
+.sec-pill{font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--text-2);background:var(--bg);font-variant-numeric:tabular-nums}
+.sec-pill.done{border-color:var(--green-light);color:var(--green);background:var(--green-bg)}
+.sec-chevron{color:var(--text-3);font-size:11px;transition:transform .2s}
+.sec-chevron.open{transform:rotate(180deg)}
+.sec-body{padding:2px 14px 12px;border-top:1px solid var(--border)}
+.sec-body.collapsed{display:none}
 
-  .app {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 20px 16px 60px;
-  }
+/* ITEMS */
+.item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .1s}
+.item:last-of-type{border-bottom:none}
+.item:hover{opacity:.8}
+.item input[type=checkbox]{margin-top:3px;flex-shrink:0;accent-color:var(--green-mid);cursor:pointer;width:14px;height:14px}
+.item-body{flex:1;min-width:0}
+.item-label{font-size:13px;line-height:1.45;color:var(--text)}
+.item-sub{font-size:11px;color:var(--text-2);margin-top:3px;line-height:1.55}
+.item.checked .item-label{color:var(--text-3);text-decoration:line-through;text-decoration-color:var(--text-3)}
+.bdg{display:inline-block;font-size:10px;font-weight:600;padding:1px 6px;border-radius:5px;margin-right:6px;vertical-align:middle}
+.bdg.pre {background:var(--blue-bg); color:var(--blue); border:1px solid var(--blue-light)}
+.bdg.exec{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-light)}
+.bdg.hard{background:var(--red-bg);  color:var(--red);  border:1px solid var(--red-light)}
+.bdg.star{background:var(--gray-bg); color:var(--gray); border:1px solid var(--gray-light)}
 
-  /* ── HEADER ── */
-  .header {
-    padding-bottom: 14px;
-    border-bottom: 0.5px solid var(--border);
-    margin-bottom: 16px;
-  }
-  .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
-  }
-  .header-title { font-size: 17px; font-weight: 600; color: var(--text); }
-  .session-status { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-2); margin-top: 2px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-mid); flex-shrink: 0; }
-  .dot.inactive { background: var(--gray-light); }
-  .clock-block { text-align: right; }
-  .clock-val { font-size: 24px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; letter-spacing: .01em; }
-  .clock-tz { font-size: 11px; color: var(--text-2); margin-top: 1px; }
+/* LIQUIDITY PANEL */
+.liq-panel{margin:10px 0 6px;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;background:var(--surface)}
 
-  .sweep-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .sweep-card {
-    padding: 12px 14px; border-radius: var(--radius-lg);
-    border: 1.5px solid var(--border); text-align: center;
-    cursor: pointer; transition: all .15s; background: var(--bg);
-  }
-  .sweep-card:hover { border-color: var(--green-light); }
-  .sweep-card.active { background: var(--green-bg); border-color: var(--green-light); }
-  .sweep-card .stag { font-size: 13px; font-weight: 600; color: var(--text); display: block; margin-bottom: 3px; }
-  .sweep-card.active .stag { color: var(--green); }
-  .sweep-card .ssub { font-size: 11px; color: var(--text-2); }
 
-  /* ── PROGRESS ── */
-  .prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .prog-track { flex: 1; height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-  .prog-fill { height: 100%; border-radius: 2px; background: var(--red); transition: width .3s, background .3s; }
-  .prog-label { font-size: 12px; color: var(--text-2); white-space: nowrap; }
-  .reset-btn {
-    font-size: 11px; padding: 4px 12px; border: 0.5px solid var(--border-md);
-    border-radius: var(--radius-sm); background: transparent; cursor: pointer;
-    color: var(--text-2); display: flex; align-items: center; gap: 4px;
-  }
-  .reset-btn:hover { border-color: var(--red-light); color: var(--red); }
-  .reset-btn svg { width: 12px; height: 12px; }
 
-  /* ── SECTIONS ── */
-  .section { margin-bottom: 8px; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
-  .sec-head {
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 14px; cursor: pointer;
-    background: var(--surface); border-bottom: 0.5px solid var(--border);
-    user-select: none;
-  }
-  .sec-head:hover { background: var(--surface2); }
-  .sec-icon { font-size: 14px; color: var(--text-2); width: 18px; text-align: center; flex-shrink: 0; }
-  .sec-title { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); flex: 1; }
-  .sec-chevron { font-size: 12px; color: var(--text-3); transition: transform .2s; }
-  .sec-chevron.open { transform: rotate(180deg); }
-  .sec-pill {
-    font-size: 11px; padding: 2px 8px; border-radius: 20px;
-    border: 0.5px solid var(--border); color: var(--text-2); background: var(--bg);
-  }
-  .sec-pill.done { border-color: var(--green-light); color: var(--green); background: var(--green-bg); }
-  .sec-body { padding: 4px 14px 12px; }
-  .sec-body.collapsed { display: none; }
+/* Untapped / Tapped groups */
+.liq-group{padding:9px 10px;border-bottom:1px solid var(--border)}
+.liq-group:last-child{border-bottom:none}
+.liq-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.liq-head-left{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+.liq-dir{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.liq-dir.above{background:var(--green-mid)}
+.liq-dir.below{background:var(--red)}
+.liq-tags{display:flex;flex-wrap:wrap;gap:5px}
+.liq-empty{font-size:11px;color:var(--text-3);font-style:italic}
 
-  /* ── ITEMS ── */
-  .item {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 8px 0; border-bottom: 0.5px solid var(--border);
-    cursor: pointer;
-  }
-  .item:last-child { border-bottom: none; }
-  .item:hover { opacity: .85; }
-  .item input[type=checkbox] { margin-top: 2px; flex-shrink: 0; accent-color: var(--green-mid); cursor: pointer; width: 14px; height: 14px; }
-  .item-body { flex: 1; }
-  .item-label { font-size: 13px; line-height: 1.45; color: var(--text); }
-  .item-sub { font-size: 11px; color: var(--text-2); margin-top: 3px; line-height: 1.5; }
-  .item.checked .item-label { color: var(--text-3); text-decoration: line-through; }
+/* Untapped tags */
+.liq-tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;border:1px solid var(--border);background:var(--bg);font-size:11px;color:var(--text-2);cursor:pointer;user-select:none;transition:all .12s}
+.liq-tag[data-dir=above]:not(.tapped):hover{border-color:var(--green-light);color:var(--green);background:var(--green-bg)}
+.liq-tag[data-dir=below]:not(.tapped):hover{border-color:var(--red-light);color:var(--red);background:var(--red-bg)}
 
-  .bdg {
-    display: inline-block; font-size: 10px; padding: 1px 6px;
-    border-radius: 6px; margin-right: 5px; font-weight: 500;
-  }
-  .bdg.pre  { background: var(--blue-bg);  color: var(--blue);  border: 0.5px solid var(--blue-light); }
-  .bdg.exec { background: var(--amber-bg); color: var(--amber); border: 0.5px solid var(--amber-light); }
-  .bdg.hard { background: var(--red-bg);   color: var(--red);   border: 0.5px solid var(--red-light); }
-  .bdg.star { background: var(--gray-bg);  color: var(--gray);  border: 0.5px solid var(--gray-light); }
+/* Tapped — HIGHLIGHT mode (default) */
+.liq-panel[data-sweep-style="highlight"] .liq-tag.tapped[data-dir=above]{background:var(--green-bg);border-color:var(--green-light);color:var(--green)}
+.liq-panel[data-sweep-style="highlight"] .liq-tag.tapped[data-dir=below]{background:var(--red-bg);border-color:var(--red-light);color:var(--red)}
+.liq-panel[data-sweep-style="highlight"] .liq-tag.tapped:hover{opacity:.7}
 
-  /* ── LIQUIDITY PANEL ── */
-  .liq-panel { margin: 8px 0 4px; border: 0.5px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
-  .liq-section { padding: 10px 12px; border-bottom: 0.5px solid var(--border); }
-  .liq-section:last-child { border-bottom: none; }
-  .liq-head { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text-2); margin-bottom: 8px; }
-  .liq-sub { font-size: 10px; color: var(--text-3); letter-spacing: .05em; text-transform: uppercase; margin: 8px 0 5px; }
-  .liq-sub:first-of-type { margin-top: 0; }
-  .liq-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-  .liq-tag {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 3px 9px; border-radius: 20px;
-    border: 0.5px solid var(--border); background: var(--bg);
-    font-size: 11px; color: var(--text-2); cursor: pointer; user-select: none; transition: all .15s;
-  }
-  .liq-tag:hover { border-color: var(--border-md); }
-  .liq-tag .ldot { width: 6px; height: 6px; border-radius: 50%; background: var(--gray-light); flex-shrink: 0; }
-  .liq-tag .lx { font-size: 10px; color: var(--text-3); }
-  .liq-tag.tapped { border-color: var(--red-light); color: var(--red); background: var(--red-bg); }
-  .liq-tag.tapped .ldot { background: var(--red); }
+/* Tapped — STRIKETHROUGH mode */
+.liq-panel[data-sweep-style="strikethrough"] .liq-tag.tapped{background:var(--surface2);border-color:var(--border);color:var(--text-3);text-decoration:line-through;text-decoration-color:var(--text-3)}
+.liq-panel[data-sweep-style="strikethrough"] .liq-tag.tapped:hover{border-color:var(--border-md)}
 
-  /* ── FORK ── */
-  .fork-box { margin: 8px 0 2px; padding: 10px 12px; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-md); }
-  .fork-opt { display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; }
-  .fork-opt input[type=radio] { cursor: pointer; accent-color: var(--green-mid); }
-  .fork-opt label { font-size: 12px; color: var(--text); cursor: pointer; }
-  .fork-result { display: none; margin-top: 8px; padding: 6px 10px; font-size: 11px; border-left: 2px solid; }
-  .fork-result.ok   { background: var(--green-bg); color: var(--green); border-color: var(--green-light); }
-  .fork-result.warn { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-light); }
+.liq-clear{font-size:11px;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:inherit;padding:0;transition:color .12s}
+.liq-clear:hover{color:var(--red)}
 
-  /* ── HARD FILTER ── */
-  .hard-note {
-    margin: 6px 0 2px; padding: 7px 10px;
-    background: var(--red-bg); border: 0.5px solid var(--red-light);
-    border-radius: var(--radius-md); font-size: 11px; color: var(--red);
-    display: flex; align-items: center; gap: 6px;
-  }
+/* FORK BOX */
+.fork-box{margin:8px 0 2px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md)}
+.fork-opt{display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer}
+.fork-opt input[type=radio]{cursor:pointer;accent-color:var(--green-mid);margin-top:3px;flex-shrink:0}
+.fork-opt label{font-size:12px;color:var(--text);cursor:pointer;line-height:1.45}
+.fork-result{display:none;margin-top:8px;padding:6px 10px;font-size:11px;border-radius:var(--r-sm);border-left:2px solid}
+.fork-result.ok  {background:var(--green-bg);color:var(--green);border-color:var(--green-mid)}
+.fork-result.warn{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-light)}
 
-  /* ── TOGGLE BUTTONS ── */
-  .tog-row { display: flex; gap: 6px; margin: 7px 0 2px; }
-  .tog-btn {
-    flex: 1; padding: 7px 6px; border: 0.5px solid var(--border);
-    border-radius: var(--radius-md); background: var(--surface);
-    font-size: 12px; cursor: pointer; color: var(--text-2);
-    font-family: inherit; transition: all .15s;
-  }
-  .tog-btn:hover { border-color: var(--border-md); background: var(--surface2); }
-  .tog-btn.on.bull { background: var(--green-bg);  color: var(--green);  border-color: var(--green-light); }
-  .tog-btn.on.bear { background: var(--red-bg);    color: var(--red);    border-color: var(--red-light); }
-  .tog-btn.on.c1   { background: var(--green-bg);  color: var(--green);  border-color: var(--green-light); }
-  .tog-btn.on.c2   { background: var(--gray-bg);   color: var(--gray);   border-color: var(--gray-light); }
-  .tog-btn.on.c3   { background: var(--amber-bg);  color: var(--amber);  border-color: var(--amber-light); }
+/* HARD NOTE */
+.hard-note{display:flex;align-items:center;gap:7px;margin:6px 0 2px;padding:8px 10px;background:var(--red-bg);border:1px solid var(--red-light);border-radius:var(--r-md);font-size:11px;color:var(--red);font-weight:500}
 
-  /* ── WINDOW BOX ── */
-  .win-box { margin: 10px 0 2px; border: 0.5px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
-  .win-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 12px; border-bottom: 0.5px solid var(--border); font-size: 12px; }
-  .win-row:last-child { border-bottom: none; }
-  .win-lbl { color: var(--text-2); }
-  .win-val { font-weight: 500; color: var(--text); }
-  .win-cut { color: var(--red); font-size: 11px; font-weight: 500; }
+/* TOGGLE BUTTONS */
+.tog-row{display:flex;gap:6px;margin:8px 0 2px}
+.tog-btn{flex:1;padding:7px 8px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface);font-size:12px;cursor:pointer;color:var(--text-2);font-family:inherit;transition:all .12s}
+.tog-btn:hover{border-color:var(--border-md);background:var(--surface2)}
+.tog-btn.on.bull{background:var(--green-bg);color:var(--green);border-color:var(--green-light)}
+.tog-btn.on.bear{background:var(--red-bg);  color:var(--red);  border-color:var(--red-light)}
+.tog-btn.on.c1  {background:var(--green-bg);color:var(--green);border-color:var(--green-light)}
+.tog-btn.on.c2  {background:var(--gray-bg); color:var(--gray); border-color:var(--gray-light)}
+.tog-btn.on.c3  {background:var(--amber-bg);color:var(--amber);border-color:var(--amber-light)}
 
-  /* ── GRADE GRID ── */
-  .grade-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 6px; padding: 6px 0; }
-  .g-card { padding: 8px 6px; border-radius: var(--radius-md); border: 0.5px solid var(--border); text-align: center; cursor: pointer; transition: all .15s; }
-  .g-card:hover { border-color: var(--border-md); }
-  .g-card.selected { border-width: 1.5px; }
-  .g-label { font-size: 14px; font-weight: 600; }
-  .g-sub { font-size: 10px; color: var(--text-2); margin-top: 2px; }
-  .gAp { background: var(--green-bg); border-color: var(--green-light); } .gAp .g-label { color: var(--green); }
-  .gA  { background: var(--teal-bg);  border-color: var(--teal-light);  } .gA  .g-label { color: var(--teal); }
-  .gAm { background: var(--blue-bg);  border-color: var(--blue-light);  } .gAm .g-label { color: var(--blue); }
-  .gB  { background: var(--amber-bg); border-color: var(--amber-light); } .gB  .g-label { color: var(--amber); }
-  .gC  { background: var(--red-bg);   border-color: var(--red-light);   } .gC  .g-label { color: var(--red); }
+/* EXEC WINDOW */
+.win-box{margin:12px 0 2px;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden}
+.win-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:12px}
+.win-row:last-child{border-bottom:none}
+.win-lbl{color:var(--text-2)}
+.win-val{font-weight:500;color:var(--text);font-variant-numeric:tabular-nums}
+.win-cut{color:var(--red);font-weight:500}
 
-  /* ── RESULT ── */
-  .result-section { margin-top: 16px; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
-  .result-head { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text-2); padding: 10px 14px 8px; background: var(--surface); border-bottom: 0.5px solid var(--border); }
-  .result-body { padding: 12px 14px; }
-  .result-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-  .r-btn {
-    padding: 14px 8px; border-radius: var(--radius-md);
-    border: 0.5px solid var(--border); background: var(--surface);
-    font-size: 13px; cursor: pointer; color: var(--text-2);
-    font-family: inherit; transition: all .15s;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .r-btn:hover { border-color: var(--border-md); background: var(--surface2); }
-  .r-btn.on.win  { background: var(--green-bg); color: var(--green); border-color: var(--green-light); }
-  .r-btn.on.loss { background: var(--red-bg);   color: var(--red);   border-color: var(--red-light); }
-  .r-btn.on.be   { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-light); }
-  .result-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .ra-btn {
-    padding: 11px 8px; border-radius: var(--radius-md);
-    border: 0.5px solid var(--border); background: var(--bg);
-    font-size: 12px; font-weight: 500; cursor: pointer;
-    font-family: inherit; transition: all .15s;
-    display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--text-2);
-  }
-  .ra-btn:hover { background: var(--surface); }
-  .ra-btn.copy  { color: var(--blue); border-color: var(--blue-light); }
-  .ra-btn.copy:hover  { background: var(--blue-bg); }
-  .ra-btn.reset2 { color: var(--red); border-color: var(--red-light); }
-  .ra-btn.reset2:hover { background: var(--red-bg); }
-  .copy-toast { display: none; text-align: center; font-size: 11px; color: var(--green); margin-top: 8px; }
+/* GRADE GRID */
+.grade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:6px;padding:6px 0}
+.g-card{padding:10px 6px;border-radius:var(--r-md);border:1px solid var(--border);text-align:center;cursor:pointer;transition:all .12s}
+.g-card:hover{border-width:1.5px}
+.g-card.selected{border-width:2px !important}
+.g-label{font-size:15px;font-weight:600}
+.g-sub{font-size:10px;color:var(--text-2);margin-top:3px}
+.gAp{background:var(--green-bg);border-color:var(--green-light)} .gAp .g-label{color:var(--green)}
+.gA {background:var(--teal-bg); border-color:var(--teal-light)}  .gA  .g-label{color:var(--teal)}
+.gAm{background:var(--blue-bg); border-color:var(--blue-light)}  .gAm .g-label{color:var(--blue)}
+.gB {background:var(--amber-bg);border-color:var(--amber-light)} .gB  .g-label{color:var(--amber)}
+.gC {background:var(--red-bg);  border-color:var(--red-light)}   .gC  .g-label{color:var(--red)}
 
-  /* ── VERDICT ── */
-  .verdict-row { display: flex; gap: 8px; margin-top: 16px; }
-  .v-btn {
-    flex: 1; padding: 13px 8px; border-radius: var(--radius-md);
-    border: 0.5px solid var(--border); background: var(--surface);
-    font-size: 12px; font-weight: 600; letter-spacing: .06em;
-    cursor: pointer; color: var(--text-2); transition: all .15s; font-family: inherit;
-  }
-  .v-btn:hover { border-color: var(--border-md); background: var(--surface2); }
-  .v-btn.trade.on { background: var(--green-bg); color: var(--green); border-color: var(--green-light); }
-  .v-btn.wait.on  { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-light); }
-  .v-btn.no.on    { background: var(--red-bg);   color: var(--red);   border-color: var(--red-light); }
+/* VERDICT */
+.verdict-row{display:flex;gap:8px;margin-top:16px}
+.v-btn{flex:1;padding:13px 8px;border-radius:var(--r-md);border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;letter-spacing:.08em;cursor:pointer;color:var(--text-2);transition:all .12s;font-family:inherit}
+.v-btn:hover{border-color:var(--border-md);background:var(--surface2)}
+.v-btn.trade.on{background:var(--green-bg);color:var(--green);border-color:var(--green-light)}
+.v-btn.wait.on {background:var(--amber-bg);color:var(--amber);border-color:var(--amber-light)}
+.v-btn.no.on   {background:var(--red-bg);  color:var(--red);  border-color:var(--red-light)}
 
-  @media (max-width: 480px) {
-    .app { padding: 14px 12px 60px; }
-    .clock-val { font-size: 20px; }
-    .sweep-card { padding: 10px; }
-    .sweep-card .stag { font-size: 12px; }
-    .grade-grid { grid-template-columns: repeat(3, 1fr); }
-  }
+/* RESULT */
+.result-section{margin-top:10px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.result-head{font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--text-2);padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border)}
+.result-body{padding:12px 14px}
+.result-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.r-btn{padding:12px 8px;border-radius:var(--r-md);border:1px solid var(--border);background:var(--surface);font-size:13px;cursor:pointer;color:var(--text-2);font-family:inherit;transition:all .12s;display:flex;align-items:center;justify-content:center;gap:6px}
+.r-btn:hover{border-color:var(--border-md);background:var(--surface2)}
+.r-btn.on.win {background:var(--green-bg);color:var(--green);border-color:var(--green-light)}
+.r-btn.on.loss{background:var(--red-bg);  color:var(--red);  border-color:var(--red-light)}
+.r-btn.on.be  {background:var(--amber-bg);color:var(--amber);border-color:var(--amber-light)}
+.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ra-btn{padding:10px 8px;border-radius:var(--r-md);border:1px solid var(--border);background:var(--bg);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .12s;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--text-2)}
+.ra-btn.copy  {color:var(--blue);border-color:var(--blue-light)}
+.ra-btn.copy:hover{background:var(--blue-bg)}
+.ra-btn.reset2{color:var(--red);border-color:var(--red-light)}
+.ra-btn.reset2:hover{background:var(--red-bg)}
+.copy-toast{display:none;text-align:center;font-size:11px;color:var(--green);margin-top:8px;padding:5px}
+
+/* TWEAKS FAB + PANEL */
+.tweaks-fab{position:fixed;bottom:20px;right:20px;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;border:1px solid var(--border-md);background:var(--surface);font-size:12px;font-weight:500;color:var(--text-2);cursor:pointer;font-family:inherit;box-shadow:0 2px 12px rgba(0,0,0,.1);transition:all .15s;z-index:100}
+.tweaks-fab:hover{background:var(--surface2);color:var(--text)}
+.tweaks-fab svg{width:13px;height:13px}
+.tweaks-panel{position:fixed;bottom:64px;right:20px;width:236px;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--r-lg);box-shadow:0 4px 24px rgba(0,0,0,.12);z-index:200;opacity:0;pointer-events:none;transform:translateY(8px) scale(.98);transition:opacity .18s,transform .18s;transform-origin:bottom right}
+.tweaks-panel.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1)}
+.tweaks-hd{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border)}
+.tweaks-hd span{font-size:12px;font-weight:600;color:var(--text)}
+.tweaks-x{background:none;border:none;cursor:pointer;font-size:18px;line-height:1;color:var(--text-3);padding:0;transition:color .1s}
+.tweaks-x:hover{color:var(--text)}
+.tweaks-body{padding:12px 14px;display:flex;flex-direction:column;gap:12px}
+.tweak-row{display:flex;flex-direction:column;gap:6px}
+.tweak-lbl{font-size:11px;font-weight:500;color:var(--text-2)}
+.tweak-seg{display:flex;gap:4px}
+.tweak-seg button{flex:1;padding:6px 8px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--bg);font-size:11px;cursor:pointer;color:var(--text-2);font-family:inherit;transition:all .12s}
+.tweak-seg button:hover{border-color:var(--border-md);color:var(--text)}
+.tweak-seg button.active{background:var(--green-bg);color:var(--green);border-color:var(--green-light)}
+
+@media (max-width:480px){
+  .app{padding:14px 12px 80px}
+  .clock-val{font-size:18px}
+  .sweep-card{padding:10px 12px}
+  .grade-grid{grid-template-columns:repeat(3,1fr)}
+  .tweaks-panel{right:12px;bottom:60px;width:calc(100vw - 24px)}
+  .tweaks-fab{right:12px;bottom:12px}
+}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- HEADER -->
   <div class="header">
-    <div class="header-top">
+    <div class="header-row">
       <div>
-        <div class="header-title">TBR checklist</div>
-        <div class="session-status">
-          <span class="dot" id="sess-dot"></span>
-          <span id="sess-label">—</span>
-        </div>
+        <div class="header-title">TBR Checklist</div>
+        <div class="sess-status"><span class="sess-dot" id="sess-dot"></span><span id="sess-label">—</span></div>
       </div>
       <div class="clock-block">
         <div class="clock-val" id="clock">--:--:--</div>
-        <div class="clock-tz">New York time</div>
+        <div class="clock-tz">New York</div>
       </div>
     </div>
     <div class="sweep-cards">
@@ -297,26 +251,17 @@
     </div>
   </div>
 
-  <!-- PROGRESS -->
   <div class="prog-row">
     <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <span class="prog-label" id="prog-label">0 / 0</span>
     <button class="reset-btn" onclick="resetAll()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8a6 6 0 1 0 1.5-4"/><path d="M2 4v4h4"/></svg>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8a6 6 0 1 0 1.5-4"/><path d="M2 4v4h4"/></svg>
       Reset
     </button>
   </div>
 
-  <div id="sections"></div>
+  <div class="sections" id="sections"></div>
 
-  <!-- VERDICT -->
-  <div class="verdict-row">
-    <button class="v-btn trade" onclick="setVerdict('trade',this)">TRADE</button>
-    <button class="v-btn wait" onclick="setVerdict('wait',this)">WAIT</button>
-    <button class="v-btn no" onclick="setVerdict('no',this)">NO TRADE</button>
-  </div>
-
-  <!-- RESULT -->
   <div class="result-section">
     <div class="result-head">Result</div>
     <div class="result-body">
@@ -335,379 +280,342 @@
 
 </div>
 
+<!-- TWEAKS -->
+<button class="tweaks-fab" onclick="toggleTweaks()">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+    <circle cx="8" cy="8" r="2.5"/>
+    <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.22 3.22l1.41 1.41M11.36 11.36l1.41 1.41M3.22 12.78l1.41-1.41M11.36 4.64l1.41-1.41"/>
+  </svg>
+  Tweaks
+</button>
+<div class="tweaks-panel" id="tweaks-panel">
+  <div class="tweaks-hd">
+    <span>Tweaks</span>
+    <button class="tweaks-x" onclick="closeTweaks()">×</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak-row">
+      <div class="tweak-lbl">Swept display</div>
+      <div class="tweak-seg">
+        <button data-tweak="sweepStyle" data-val="highlight"     onclick="setTweak('sweepStyle','highlight')">Highlight</button>
+        <button data-tweak="sweepStyle" data-val="strikethrough" onclick="setTweak('sweepStyle','strikethrough')">Cross out</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 const SESS = {
-  london: { label:'London TBR active', anchor:'01:00 NY', window:'02:30–03:00 NY', cutoff:'03:30', tbrWin:'01:12–02:12 NY' },
-  ny:     { label:'NY TBR active',     anchor:'08:00 NY', window:'09:30–10:30 NY', cutoff:'10:30', tbrWin:'08:12–09:12 NY' }
+  london:{ label:'London TBR active', anchor:'01:00 NY', window:'02:30–03:00 NY', cutoff:'03:30', tbrWin:'01:12–02:12 NY' },
+  ny:    { label:'NY TBR active',     anchor:'08:00 NY', window:'09:30–10:30 NY', cutoff:'10:30', tbrWin:'08:12–09:12 NY' }
 };
+const LIQ_ABOVE = ['PDH','PDL','EQH','EQL','Asia H','Asia L','London H','London L','HTF BSL','HTF SSL','LRLR','OB'];
+const LIQ_BELOW = ['PDH','PDL','EQH','EQL','Asia H','Asia L','London H','London L','HTF BSL','HTF SSL','LRLR','OB'];
+const LIQ_ALL   = [...LIQ_ABOVE,...LIQ_BELOW];
 
-const LIQ_ALL   = ['PDH','PDL','Asia H','Asia L','London H','London L','Pre-mkt H','Pre-mkt L','1H Swing H','1H Swing L','HTF FVG ↑','HTF FVG ↓','TBR H','TBR L'];
-const LIQ_ABOVE = ['PDH','Asia H','London H','Pre-mkt H','1H Swing H','HTF FVG ↑','TBR H'];
-const LIQ_BELOW = ['PDL','Asia L','London L','Pre-mkt L','1H Swing L','HTF FVG ↓','TBR L'];
-
-function getCurSess() {
-  const ny = new Date(new Date().toLocaleString('en-US', { timeZone:'America/New_York' }));
-  const h = ny.getHours();
-  if (h >= 1 && h < 4)  return 'london';
-  if (h >= 8 && h < 11) return 'ny';
+function getCurSess(){
+  const ny=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
+  const h=ny.getHours();
+  if(h>=1&&h<4)  return 'london';
+  if(h>=8&&h<11) return 'ny';
   return null;
 }
 
-function getSections(s) {
-  const S = SESS[s] || SESS.london;
-  return [
-    { id:'pre', icon:'👁', title:'Pre-TBR — zoom out, look left', items:[
-      { id:'p1', badge:'01', bc:'pre', label:'Clear chart (all indicators off)',
-        sub:'邊度有 displacement? Who\'s in control? 邊支係 OB? OB align EQH/EQL = A tier — mark immediately. ⚠️ OB ≠ DOL' },
-      { id:'p2', badge:'02', bc:'pre', label:'Mark key levels + identify primary DOL',
-        sub:'EQH/EQL · BSL/SSL · PDH/PDL (session-persistent) · Asia H/L · London H/L · Which session H/L recently taken? · Untapped HTF swings = DOL candidates',
-        liq: true },
-      { id:'p3', badge:'03', bc:'pre', label:'Premium / Discount',
-        sub:'EQ = (PDH + PDL) / 2 → Long in discount only · Short in premium only' },
-      { id:'p4', badge:'04', bc:'pre', label:'Anchor candle — ' + S.anchor,
-        sub:'Where does anchor sit relative to HTF?', anchor: true },
-      { id:'p5', badge:'05', bc:'pre', label:'Open TBR indicator (' + S.tbrWin + ')',
-        sub:'Mark every FVG real-time · Any liq swept around TBR? · FVG = support or resistance?' },
-      { id:'p6', badge:'★',  bc:'star', label:'Final confluence: 1H & 1m MACD / EMA' }
+function getSections(s){
+  const S=SESS[s]||SESS.london;
+  return[
+    {id:'pre',icon:'👁',title:'Pre-TBR — zoom out, look left',items:[
+      {id:'p1',badge:'01',bc:'pre',label:'Clear chart (all indicators off)',
+       sub:'邊度有 displacement? Who\'s in control? 邊支係 OB? OB align EQH/EQL = A tier — mark immediately. ⚠️ OB ≠ DOL'},
+      {id:'p2',badge:'02',bc:'pre',label:'Mark key levels + identify primary DOL',
+       sub:'EQH/EQL · BSL/SSL · PDH/PDL  · Session H/L · LRLR ·  is HRLR on my side?',liq:true},
+      {id:'p3',badge:'03',bc:'pre',label:'Premium / Discount',
+       sub:'where is midnight open?',prem:true},
+      {id:'p4',badge:'04',bc:'pre',label:'Anchor candle — 01:00 / 08:00 NY',
+       sub:'Where does anchor sit relative to HTF?',anchor:true},
+      {id:'p5',badge:'05',bc:'pre',label:'Open TBR indicator',
+       sub:'Any liq swept or OB around TBR? · FVG = support or resistance?'},
+      {id:'p6',badge:'★',bc:'star',label:'Final confluence: 1H & 1m MACD / EMA'}
     ]},
-    { id:'exec', icon:'🎯', title:'Execution checklist', win: true, items:[
-      { id:'e1',  badge:'1', bc:'exec', label:'Named DOL confirmed',
-        sub:'BSL / SSL clearly identified. No named DOL = no trade' },
-      { id:'e2',  badge:'2', bc:'exec', label:'Named liquidity pool swept',
-        sub:'BSL/SSL · EQH/EQL · PDH/PDL · Session H/L · PWH/PWL. Price touch only = NOT a valid sweep' },
-      { id:'e3',  badge:'3', bc:'exec', label:'1H MACD bullish or bearish?', macd: true },
-      { id:'e4',  badge:'4', bc:'exec', label:'C2 closure confirmed',
-        sub:'Wick out + body close back inside = C2. No C2 = WAIT' },
-      { id:'e5',  badge:'5', bc:'exec', label:'Displacement away from swept side',
-        sub:'No displacement = no trade. Chop after sweep = WAIT' },
-      { id:'e6',  badge:'6', bc:'exec', label:'OB-in-liquidity with FVG',
-        sub:'Displacement candle leaves FVG. Connected to sweep, not mid-range' },
-      { id:'e7',  badge:'7', bc:'exec', label:'iFVG inversion = entry permission',
-        sub:'Price returns to OB FVG, closes through → flips → entry triggered' },
-      { id:'e8',  badge:'!', bc:'hard', label:'Internal liquidity untaken',
-        sub:'Fuel must exist between entry and DOL', hard: true },
-      { id:'e9',  badge:'8', bc:'exec', label:'Long in discount / Short in premium',
-        sub:'SMT (ES↔NQ divergence) = bonus confluence', smt: true },
-      { id:'e10', badge:'9', bc:'exec', label:'Clear DOL target (one of 7)',
-        sub:'EQH · EQL · ITH · ITL · Data H/L · LRLR. No clear target = no trade' }
+    {id:'exec',icon:'🎯',title:'Execution checklist',win:true,items:[
+      {id:'e1', badge:'1',bc:'exec',label:'Named DOL confirmed',         sub:'BSL / SSL clearly identified. No named DOL = no trade'},
+      {id:'e2', badge:'2',bc:'exec',label:'Named liquidity pool swept',  sub:'BSL/SSL · EQH/EQL · PDH/PDL · Session H/L '},
+      {id:'e3', badge:'3',bc:'exec',label:'1H MACD bullish or bearish?', macd:true},
+      {id:'e4', badge:'4',bc:'exec',label:'C2 closure confirmed',        sub:'Wick out + body close back inside = C2. No C2 = WAIT'},
+      {id:'e5', badge:'5',bc:'exec',label:'Displacement away from swept side',sub:'No displacement = no trade. Chop after sweep = WAIT'}
     ]},
-    { id:'mgmt', icon:'⚙️', title:'Trade management', items:[
-      { id:'m1', badge:'▶', bc:'star', label:'Entry: iFVG retest or KTK standalone' },
-      { id:'m2', badge:'▶', bc:'star', label:'Scale at first internal liquidity' },
-      { id:'m3', badge:'▶', bc:'star', label:'Runner to named DOL' },
-      { id:'m4', badge:'▶', bc:'star', label:'Move to BE when price reaches internal liquidity' },
-      { id:'m5', badge:'▶', bc:'star', label:'Tags internal + stalls → exit at BE immediately' },
-      { id:'m6', badge:'▶', bc:'star', label:'V-Shape Recovery: ≤ 6 candles',
-        sub:'> 6 candles = slow recovery = compromised structure = skip' }
-    ]},
-    { id:'grade', icon:'🏅', title:'Setup grade', grade: true }
+    {id:'mgmt',icon:'⚙️',title:'Trade management',items:[
+      {id:'m1',badge:'▶',bc:'star',label:'Entry: KTK . iFVG . BRP'},
+      {id:'m2',badge:'▶',bc:'star',label:'Move to BE when price reaches internal liquidity'},
+      {id:'m3',badge:'▶',bc:'star',label:'Runner to named DOL'},
+      {id:'m6',badge:'▶',bc:'star',label:'V-Shape Recovery: ≤ 6 candles',sub:'> 6 candles = slow recovery = compromised structure = skip'}
+    ]}
   ];
 }
 
-/* ── STATE ── */
-function getState()    { try { return JSON.parse(localStorage.getItem('tbr_v4') || '{}'); } catch { return {}; } }
-function saveState(st) { try { localStorage.setItem('tbr_v4', JSON.stringify(st)); } catch {} }
+/* STATE */
+function getState()   {try{return JSON.parse(localStorage.getItem('tbr_v4')||'{}')}catch{return{}}}
+function saveState(s) {try{localStorage.setItem('tbr_v4',JSON.stringify(s))}catch{}}
+function getTweaks()  {try{return JSON.parse(localStorage.getItem('tbr_tweaks')||'{}')}catch{return{}}}
+function saveTweaks(t){try{localStorage.setItem('tbr_tweaks',JSON.stringify(t))}catch{}}
 
-/* ── ACTIONS ── */
-function toggle(id) {
-  const st = getState(); st[id] = !st[id]; saveState(st);
-  const cb  = document.getElementById('cb_' + id);
-  const row = document.getElementById('row_' + id);
-  if (cb)  cb.checked = !!st[id];
-  if (row) row.classList.toggle('checked', !!st[id]);
+/* CHECKLIST */
+function toggle(id){
+  const st=getState(); st[id]=!st[id]; saveState(st);
+  const cb=document.getElementById('cb_'+id), row=document.getElementById('row_'+id);
+  if(cb)  cb.checked=!!st[id];
+  if(row) row.classList.toggle('checked',!!st[id]);
   updateProgress();
 }
-
-function setSweep(dir) {
-  document.getElementById('card-low').classList.toggle('active',  dir === 'low');
-  document.getElementById('card-high').classList.toggle('active', dir === 'high');
+function setSweep(dir){
+  document.getElementById('card-low').classList.toggle('active', dir==='low');
+  document.getElementById('card-high').classList.toggle('active',dir==='high');
+}
+function setVerdict(v,btn){document.querySelectorAll('.v-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+function setResult(v,btn) {document.querySelectorAll('.r-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+function setGrade(card)   {document.querySelectorAll('.g-card').forEach(c=>c.classList.remove('selected'));card.classList.add('selected')}
+function togBtn(gid,btn)  {document.querySelectorAll('[data-group="'+gid+'"]').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+function showFork(val){
+  const el=document.getElementById('fork-res');if(!el)return;
+  if(val==='htf'){el.className='fork-result ok';  el.style.display='block';el.textContent='TBR sweep H/L rule valid → continue normal TBR flow'}
+  else           {el.className='fork-result warn';el.style.display='block';el.textContent='Consider turtle soup or iFVG entry instead'}
 }
 
-function setVerdict(v, btn) {
-  document.querySelectorAll('.v-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
+/* LIQUIDITY */
+function togLiq(key,dir){
+  const stKey='liq_'+dir+'_'+key;
+  const st=getState(); st[stKey]=!st[stKey]; saveState(st);
+  document.querySelectorAll('[data-liq-key="'+key+'"][data-dir="'+dir+'"]').forEach(el=>
+    el.classList.toggle('tapped',!!st[stKey])
+  );
+  const anyTapped=LIQ_ABOVE.some(k=>st['liq_above_'+k])||LIQ_BELOW.some(k=>st['liq_below_'+k]);
+  const cb=document.getElementById('liq-clear-btn');
+  if(cb) cb.style.visibility=anyTapped?'visible':'hidden';
 }
 
-function togBtn(groupId, cls, btn) {
-  document.querySelectorAll('[data-group="' + groupId + '"]').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-}
-
-function togLiq(key) {
-  const st = getState();
-  const k = 'liq_' + key;
-  st[k] = !st[k];
+function clearLiq(){
+  const st=getState();
+  LIQ_ABOVE.forEach(k=>delete st['liq_above_'+k]);
+  LIQ_BELOW.forEach(k=>delete st['liq_below_'+k]);
   saveState(st);
-  const sid = key.replace(/[^a-zA-Z0-9]/g, '_');
-  ['ltag_' + sid, 'ltag_a_' + sid, 'ltag_b_' + sid].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.toggle('tapped', !!st[k]);
-  });
+  document.querySelectorAll('.liq-tag.tapped').forEach(t=>t.classList.remove('tapped'));
+  const cb=document.getElementById('liq-clear-btn');
+  if(cb) cb.style.visibility='hidden';
 }
-
-function showFork(val) {
-  const el = document.getElementById('fork-res');
-  if (!el) return;
-  if (val === 'htf') { el.className = 'fork-result ok';   el.style.display = 'block'; el.textContent = 'TBR sweep H/L rule valid → continue normal TBR flow'; }
-  else               { el.className = 'fork-result warn'; el.style.display = 'block'; el.textContent = 'Consider turtle soup or iFVG entry instead'; }
+function rebuildLiqPanel(){
+  const c=document.getElementById('liq-container');
+  if(c) c.innerHTML=buildLiqPanel();
 }
-
-function setGrade(card) {
-  document.querySelectorAll('.g-card').forEach(c => c.classList.remove('selected'));
-  card.classList.add('selected');
-}
-
-function resetAll() {
-  saveState({});
-  document.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
-  document.querySelectorAll('.item').forEach(r => r.classList.remove('checked'));
-  document.querySelectorAll('.v-btn, .tog-btn, .r-btn').forEach(b => b.classList.remove('on'));
-  document.querySelectorAll('.g-card').forEach(c => c.classList.remove('selected'));
-  document.querySelectorAll('.sweep-card').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.liq-tag').forEach(t => t.classList.remove('tapped'));
-  const fr = document.getElementById('fork-res'); if (fr) fr.style.display = 'none';
-  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
-  updateProgress();
-}
-
-/* ── PROGRESS ── */
-function updateProgress() {
-  const st = getState();
-  const cbs = document.querySelectorAll('input[type=checkbox]');
-  let done = 0, total = cbs.length;
-  cbs.forEach(cb => { if (st[cb.id.replace('cb_', '')]) done++; });
-  document.getElementById('prog-label').textContent = done + ' / ' + total;
-  const pct  = total ? Math.round(done / total * 100) : 0;
-  const fill = document.getElementById('prog-fill');
-  fill.style.width      = pct + '%';
-  fill.style.background = pct >= 100 ? '#639922' : '#E24B4A';
-  const s = getCurSess() || 'london';
-  getSections(s).forEach(sec => {
-    if (!sec.items) return;
-    const pill = document.getElementById('pill_' + sec.id); if (!pill) return;
-    const dn = sec.items.filter(it => st[it.id]).length;
-    pill.textContent = dn + '/' + sec.items.length;
-    pill.classList.toggle('done', dn === sec.items.length);
-  });
-}
-
-/* ── BUILD LIQUIDITY PANEL ── */
-function buildLiqPanel() {
-  const st = getState();
-  const tag = (k, prefix) => {
-    const sid = k.replace(/[^a-zA-Z0-9]/g, '_');
-    const id  = 'ltag_' + (prefix ? prefix + '_' : '') + sid;
-    const tapped = !!st['liq_' + k];
-    return `<span class="liq-tag${tapped ? ' tapped' : ''}" id="${id}" onclick="togLiq('${k}')"><span class="ldot"></span>${k}</span>`;
+function buildLiqPanel(){
+  const st=getState(), tw=getTweaks();
+  const style=tw.sweepStyle||'highlight';
+  const anyTapped=LIQ_ABOVE.some(k=>st['liq_above_'+k])||LIQ_BELOW.some(k=>st['liq_below_'+k]);
+  const tag=(k,dir)=>{
+    const tapped=!!st['liq_'+dir+'_'+k];
+    return `<span class="liq-tag${tapped?' tapped':''}" data-liq-key="${k}" data-dir="${dir}" onclick="togLiq('${k}','${dir}')">${k}</span>`;
   };
-  return `<div class="liq-panel">
-    <div class="liq-section">
-      <div class="liq-head">Tapped Liquidity</div>
-      <div class="liq-tags">${LIQ_ALL.map(k => tag(k, '')).join('')}</div>
+  return `<div class="liq-panel" data-sweep-style="${style}">
+    <div class="liq-group">
+      <div class="liq-head">
+        <div class="liq-head-left"><span class="liq-dir above"></span>Tapped Liq.</div>
+        <button id="liq-clear-btn" onclick="clearLiq()" class="liq-clear" style="visibility:${anyTapped?'visible':'hidden'}">Clear all</button>
+      </div>
+      <div class="liq-tags">${LIQ_ABOVE.map(k=>tag(k,'above')).join('')}</div>
     </div>
-    <div class="liq-section">
-      <div class="liq-head">Untapped Liquidity</div>
-      <div class="liq-sub">Above</div>
-      <div class="liq-tags">${LIQ_ABOVE.map(k => tag(k, 'a')).join('')}</div>
-      <div class="liq-sub">Below</div>
-      <div class="liq-tags">${LIQ_BELOW.map(k => tag(k, 'b')).join('')}</div>
+    <div class="liq-group">
+      <div class="liq-head">
+        <div class="liq-head-left"><span class="liq-dir below"></span>Untapped Liq.</div>
+      </div>
+      <div class="liq-tags">${LIQ_BELOW.map(k=>tag(k,'below')).join('')}</div>
     </div>
   </div>`;
 }
 
-/* ── RENDER ── */
-function render() {
-  const s      = getCurSess() || 'london';
-  const S      = SESS[s];
-  const active = !!getCurSess();
-  document.getElementById('sess-dot').className   = 'dot' + (active ? '' : ' inactive');
-  document.getElementById('sess-label').textContent = active ? S.label : 'Between sessions';
+/* RESET */
+function resetAll(){
+  saveState({});
+  document.querySelectorAll('input[type=checkbox]').forEach(c=>c.checked=false);
+  document.querySelectorAll('.item').forEach(r=>r.classList.remove('checked'));
+  document.querySelectorAll('.v-btn,.tog-btn,.r-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.g-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.sweep-card').forEach(c=>c.classList.remove('active'));
+  const fr=document.getElementById('fork-res'); if(fr)fr.style.display='none';
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  rebuildLiqPanel(); updateProgress();
+}
 
-  const st        = getState();
-  const container = document.getElementById('sections');
-  container.innerHTML = '';
+/* PROGRESS */
+function updateProgress(){
+  const st=getState();
+  const cbs=document.querySelectorAll('input[type=checkbox]');
+  let done=0; cbs.forEach(cb=>{if(st[cb.id.replace('cb_','')])done++});
+  const total=cbs.length;
+  document.getElementById('prog-label').textContent=done+' / '+total;
+  const pct=total?Math.round(done/total*100):0;
+  const fill=document.getElementById('prog-fill');
+  fill.style.width=pct+'%';
+  fill.style.background=pct>=100?'var(--green-mid)':'var(--red)';
+  const s=getCurSess()||'london';
+  getSections(s).forEach(sec=>{
+    if(!sec.items)return;
+    const pill=document.getElementById('pill_'+sec.id); if(!pill)return;
+    const dn=sec.items.filter(it=>st[it.id]).length;
+    pill.textContent=dn+'/'+sec.items.length;
+    pill.classList.toggle('done',dn===sec.items.length);
+  });
+}
 
-  getSections(s).forEach(sec => {
-    const div  = document.createElement('div'); div.className = 'section';
-    const head = document.createElement('div'); head.className = 'sec-head';
-    const pillHTML = sec.grade ? '' : `<span class="sec-pill" id="pill_${sec.id}">0/${(sec.items||[]).length}</span>`;
-    head.innerHTML = `<span class="sec-icon">${sec.icon}</span><span class="sec-title">${sec.title}</span>${pillHTML}<span class="sec-chevron open">▾</span>`;
-
-    const body = document.createElement('div'); body.className = 'sec-body';
-
-    head.addEventListener('click', () => {
+/* RENDER */
+function render(){
+  const s=getCurSess()||'london', S=SESS[s], active=!!getCurSess();
+  document.getElementById('sess-dot').className='sess-dot'+(active?'':' off');
+  document.getElementById('sess-label').textContent=active?S.label:'Between sessions';
+  const st=getState(), container=document.getElementById('sections');
+  container.innerHTML='';
+  getSections(s).forEach(sec=>{
+    const div=document.createElement('div'); div.className='section';
+    const pillH=sec.grade?'':`<span class="sec-pill" id="pill_${sec.id}">0/${(sec.items||[]).length}</span>`;
+    const head=document.createElement('div'); head.className='sec-head';
+    head.innerHTML=`<span class="sec-icon">${sec.icon}</span><span class="sec-title">${sec.title}</span>${pillH}<span class="sec-chevron open">▾</span>`;
+    const body=document.createElement('div'); body.className='sec-body';
+    head.addEventListener('click',()=>{
       body.classList.toggle('collapsed');
-      head.querySelector('.sec-chevron').classList.toggle('open', !body.classList.contains('collapsed'));
+      head.querySelector('.sec-chevron').classList.toggle('open',!body.classList.contains('collapsed'));
     });
-
-    if (sec.grade) {
-      const grades = [
-        {g:'A+',cls:'gAp',sub:'All 5 clean'},
-        {g:'A', cls:'gA', sub:'4/5 clean'},
-        {g:'A−',cls:'gAm',sub:'Some chop'},
-        {g:'B+',cls:'gAm',sub:'Body close req.'},
-        {g:'B', cls:'gB', sub:'Weak confluence'},
-        {g:'C', cls:'gC', sub:'Never take'}
+    if(sec.grade){
+      const grades=[
+        {g:'A+',cls:'gAp',sub:'All 5 clean'},{g:'A',cls:'gA',sub:'4/5 clean'},
+        {g:'A−',cls:'gAm',sub:'Some chop'}, {g:'B+',cls:'gAm',sub:'Body close req.'},
+        {g:'B',cls:'gB',sub:'Weak confluence'},{g:'C',cls:'gC',sub:'Never take'}
       ];
-      const grid = document.createElement('div'); grid.className = 'grade-grid';
-      grades.forEach(gr => {
-        const card = document.createElement('div');
-        card.className = 'g-card ' + gr.cls;
-        card.innerHTML = `<div class="g-label">${gr.g}</div><div class="g-sub">${gr.sub}</div>`;
-        card.addEventListener('click', () => setGrade(card));
+      const grid=document.createElement('div'); grid.className='grade-grid';
+      grades.forEach(gr=>{
+        const card=document.createElement('div');
+        card.className='g-card '+gr.cls;
+        card.innerHTML=`<div class="g-label">${gr.g}</div><div class="g-sub">${gr.sub}</div>`;
+        card.addEventListener('click',()=>setGrade(card));
         grid.appendChild(card);
       });
       body.appendChild(grid);
-
     } else {
-      sec.items.forEach(item => {
-        const row = document.createElement('div');
-        row.className = 'item' + (st[item.id] ? ' checked' : '');
-        row.id = 'row_' + item.id;
-        row.innerHTML = `
-          <input type="checkbox" id="cb_${item.id}" ${st[item.id] ? 'checked' : ''}>
+      sec.items.forEach(item=>{
+        const row=document.createElement('div');
+        row.className='item'+(st[item.id]?' checked':''); row.id='row_'+item.id;
+        row.innerHTML=`
+          <input type="checkbox" id="cb_${item.id}" ${st[item.id]?'checked':''}>
           <div class="item-body">
             <div class="item-label"><span class="bdg ${item.bc}">${item.badge}</span>${item.label}</div>
-            ${item.sub ? `<div class="item-sub">${item.sub}</div>` : ''}
+            ${item.sub?`<div class="item-sub">${item.sub}</div>`:''}
           </div>`;
-
-        row.addEventListener('click', e => {
-          if (e.target.tagName === 'INPUT') return;
-          if (e.target.closest('.fork-box, .tog-row, .liq-panel')) return;
+        row.addEventListener('click',e=>{
+          if(e.target.tagName==='INPUT')return;
+          if(e.target.closest('.fork-box,.tog-row,.liq-panel'))return;
           toggle(item.id);
         });
-        row.querySelector('input').addEventListener('change', () => toggle(item.id));
+        row.querySelector('input').addEventListener('change',()=>toggle(item.id));
         body.appendChild(row);
-
-        /* liquidity panel */
-        if (item.liq) {
-          const lp = document.createElement('div');
-          lp.innerHTML = buildLiqPanel();
-          body.appendChild(lp);
+        if(item.liq){
+          const lp=document.createElement('div'); lp.id='liq-container';
+          lp.innerHTML=buildLiqPanel(); body.appendChild(lp);
         }
-
-        /* anchor fork */
-        if (item.anchor) {
-          const fb = document.createElement('div'); fb.className = 'fork-box';
-          fb.innerHTML = `
+        if(item.anchor){
+          const fb=document.createElement('div'); fb.className='fork-box';
+          fb.innerHTML=`
             <div class="fork-opt"><input type="radio" name="afork" id="af_htf" onchange="showFork('htf')"><label for="af_htf">Anchor at HTF swing point → TBR sweep rule valid</label></div>
             <div class="fork-opt"><input type="radio" name="afork" id="af_fvg" onchange="showFork('fvg')"><label for="af_fvg">Anchor inside HTF FVG → Consider turtle soup or iFVG</label></div>
             <div class="fork-result" id="fork-res"></div>`;
           body.appendChild(fb);
         }
-
-        /* hard filter */
-        if (item.hard) {
-          const hn = document.createElement('div'); hn.className = 'hard-note';
-          hn.innerHTML = `<span>⚠️</span> Hard filter: internal taken = NO TRADE immediately`;
+        if(item.hard){
+          const hn=document.createElement('div'); hn.className='hard-note';
+          hn.innerHTML=`<span>⚠️</span> Hard filter: internal taken = NO TRADE immediately`;
           body.appendChild(hn);
         }
-
-        /* MACD toggle */
-        if (item.macd) {
-          const gid = 'macd_' + item.id;
-          const mr = document.createElement('div'); mr.className = 'tog-row';
-          mr.innerHTML = `
-            <button class="tog-btn bull" data-group="${gid}" onclick="togBtn('${gid}','bull',this)">Bullish</button>
-            <button class="tog-btn bear" data-group="${gid}" onclick="togBtn('${gid}','bear',this)">Bearish</button>`;
+        if(item.prem){
+          const gid='prem_'+item.id, pr=document.createElement('div'); pr.className='tog-row';
+          pr.innerHTML=`<button class="tog-btn bull" data-group="${gid}" onclick="togBtn('${gid}',this)">Premium</button><button class="tog-btn bear" data-group="${gid}" onclick="togBtn('${gid}',this)">Discount</button>`;
+          body.appendChild(pr);
+        }
+        if(item.macd){
+          const gid='macd_'+item.id, mr=document.createElement('div'); mr.className='tog-row';
+          mr.innerHTML=`<button class="tog-btn bull" data-group="${gid}" onclick="togBtn('${gid}',this)">Bullish</button><button class="tog-btn bear" data-group="${gid}" onclick="togBtn('${gid}',this)">Bearish</button>`;
           body.appendChild(mr);
         }
-
-        /* SMT toggle */
-        if (item.smt) {
-          const gid = 'smt_' + item.id;
-          const sr = document.createElement('div'); sr.className = 'tog-row';
-          sr.innerHTML = `
-            <button class="tog-btn c1" data-group="${gid}" onclick="togBtn('${gid}','c1',this)">SMT confirmed</button>
-            <button class="tog-btn c2" data-group="${gid}" onclick="togBtn('${gid}','c2',this)">SMT absent</button>
-            <button class="tog-btn c3" data-group="${gid}" onclick="togBtn('${gid}','c3',this)">SMT unclear</button>`;
+        if(item.smt){
+          const gid='smt_'+item.id, sr=document.createElement('div'); sr.className='tog-row';
+          sr.innerHTML=`<button class="tog-btn c1" data-group="${gid}" onclick="togBtn('${gid}',this)">SMT confirmed</button><button class="tog-btn c2" data-group="${gid}" onclick="togBtn('${gid}',this)">SMT absent</button><button class="tog-btn c3" data-group="${gid}" onclick="togBtn('${gid}',this)">SMT unclear</button>`;
           body.appendChild(sr);
         }
       });
-
-      /* execution window */
-      if (sec.win) {
-        const wb = document.createElement('div'); wb.className = 'win-box';
-        wb.innerHTML = `
-          <div class="win-row"><span class="win-lbl">Execution window</span><span class="win-val">${S.window}</span></div>
-          <div class="win-row"><span class="win-lbl">Hard cutoff</span><span class="win-cut">${S.cutoff} — stop trading</span></div>`;
+      if(sec.win){
+        const wb=document.createElement('div'); wb.className='win-box';
+        wb.innerHTML=`<div class="win-row"><span class="win-lbl">Execution window</span><span class="win-val">${S.window}</span></div><div class="win-row"><span class="win-lbl">Hard cutoff</span><span class="win-cut">${S.cutoff} — stop trading</span></div>`;
         body.appendChild(wb);
       }
     }
-
     div.appendChild(head); div.appendChild(body); container.appendChild(div);
   });
   updateProgress();
 }
 
-function setResult(v, btn) {
-  document.querySelectorAll('.r-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-}
-
-function copyLog() {
-  const s = getCurSess() || 'london';
-  const st = getState();
-  const sects = getSections(s);
-  const now = new Date(new Date().toLocaleString('en-US', { timeZone:'America/New_York' }));
-  const ts = now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:false }) + ' NY';
-
-  const verdict = document.querySelector('.v-btn.on');
-  const result  = document.querySelector('.r-btn.on');
-  const sweep   = document.getElementById('card-low').classList.contains('active') ? '#sweptlowaimhigh' :
-                  document.getElementById('card-high').classList.contains('active') ? '#swepthighaimlow' : '—';
-  const grade   = document.querySelector('.g-card.selected .g-label');
-  const macd    = document.querySelector('.tog-btn.bull.on') ? 'Bullish' :
-                  document.querySelector('.tog-btn.bear.on') ? 'Bearish' : '—';
-  const smt     = document.querySelector('.tog-btn.c1.on') ? 'Confirmed' :
-                  document.querySelector('.tog-btn.c2.on') ? 'Absent' :
-                  document.querySelector('.tog-btn.c3.on') ? 'Unclear' : '—';
-
-  let lines = [
+/* COPY LOG */
+function copyLog(){
+  const s=getCurSess()||'london', st=getState();
+  const now=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
+  const ts=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false})+' NY';
+  const verdict=document.querySelector('.v-btn.on'), result=document.querySelector('.r-btn.on');
+  const sweep=document.getElementById('card-low').classList.contains('active')?'#sweptlowaimhigh':
+              document.getElementById('card-high').classList.contains('active')?'#swepthighaimlow':'—';
+  const macd=document.querySelector('[data-group^="macd_"].bull.on')?'Bullish':document.querySelector('[data-group^="macd_"].bear.on')?'Bearish':'—';
+  const tappedA=LIQ_ABOVE.filter(k=>st['liq_above_'+k]);
+  const tappedB=LIQ_BELOW.filter(k=>st['liq_below_'+k]);
+  let lines=[
     '── TBR Session Log ──',
-    `Time:    ${ts}`,
-    `Session: ${SESS[s].label}`,
-    `Sweep:   ${sweep}`,
-    `Verdict: ${verdict ? verdict.textContent.trim() : '—'}`,
-    `Grade:   ${grade ? grade.textContent : '—'}`,
-    `MACD:    ${macd}`,
-    `SMT:     ${smt}`,
-    `Result:  ${result ? result.textContent.trim() : '—'}`,
-    '',
-    'Checklist:'
+    `Time:     ${ts}`,`Session:  ${SESS[s].label}`,
+    `Sweep:    ${sweep}`,`MACD:     ${macd}`,
+    `Result:   ${result?result.textContent.trim():'—'}`,
+    `Tapped Liq.:   ${tappedA.length?tappedA.join(', '):'—'}`,
+    `Untapped Liq.: ${tappedB.length?tappedB.join(', '):'—'}`,
+    '','Checklist:'
   ];
-
-  sects.forEach(sec => {
-    if (!sec.items) return;
-    lines.push('  ' + sec.title.toUpperCase());
-    sec.items.forEach(item => {
-      const done = !!st[item.id];
-      lines.push(`  ${done ? '✓' : '○'} [${item.badge}] ${item.label}`);
-    });
+  getSections(s).forEach(sec=>{
+    if(!sec.items)return;
+    lines.push('  '+sec.title.toUpperCase());
+    sec.items.forEach(it=>lines.push(`  ${st[it.id]?'✓':'○'} [${it.badge}] ${it.label}`));
   });
-
   lines.push('──────────────────────');
-  const text = lines.join('\n');
+  const text=lines.join('\n');
+  navigator.clipboard.writeText(text)
+    .then(()=>{const t=document.getElementById('copy-toast');t.style.display='block';setTimeout(()=>{t.style.display='none'},2000)})
+    .catch(()=>prompt('Copy this log:',text));
+}
 
-  navigator.clipboard.writeText(text).then(() => {
-    const toast = document.getElementById('copy-toast');
-    toast.style.display = 'block';
-    setTimeout(() => { toast.style.display = 'none'; }, 2000);
-  }).catch(() => {
-    prompt('Copy this log:', text);
+/* TWEAKS */
+function setTweak(key,val){const t=getTweaks();t[key]=val;saveTweaks(t);updateTweakUI();rebuildLiqPanel()}
+function toggleTweaks(){document.getElementById('tweaks-panel').classList.toggle('open')}
+function closeTweaks() {document.getElementById('tweaks-panel').classList.remove('open')}
+function updateTweakUI(){
+  const t=getTweaks();
+  document.querySelectorAll('[data-tweak]').forEach(btn=>{
+    const def=btn.dataset.tweak==='sweepStyle'?'highlight':'';
+    btn.classList.toggle('active',(t[btn.dataset.tweak]||def)===btn.dataset.val);
   });
 }
 
-/* ── CLOCK ── */
-function updateClock() {
-  const ny = new Date(new Date().toLocaleString('en-US', { timeZone:'America/New_York' }));
-  const h  = String(ny.getHours()).padStart(2,'0');
-  const m  = String(ny.getMinutes()).padStart(2,'0');
-  const s  = String(ny.getSeconds()).padStart(2,'0');
-  document.getElementById('clock').textContent = h + ':' + m + ':' + s;
+/* CLOCK */
+function updateClock(){
+  const ny=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
+  document.getElementById('clock').textContent=
+    String(ny.getHours()).padStart(2,'0')+':'+String(ny.getMinutes()).padStart(2,'0')+':'+String(ny.getSeconds()).padStart(2,'0');
 }
 
-render(); updateClock(); setInterval(updateClock, 1000);
+/* INIT */
+render(); updateClock(); updateTweakUI();
+setInterval(updateClock,1000);
+document.addEventListener('click',e=>{
+  const p=document.getElementById('tweaks-panel'),fab=document.querySelector('.tweaks-fab');
+  if(p&&p.classList.contains('open')&&!p.contains(e.target)&&!fab.contains(e.target))p.classList.remove('open');
+});
 </script>
 </body>
 </html>
